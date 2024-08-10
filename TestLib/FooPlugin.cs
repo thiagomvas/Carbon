@@ -18,7 +18,7 @@ namespace TestLib
 
         public UserControl GetControl()
         {
-            _control = new ClockPluginControl();
+            _control = new ClockPluginControl() { Width = 300 };
             return _control;
         }
     }
@@ -145,10 +145,10 @@ namespace TestLib
         {
             var quotes = new[]
             {
-                "The best way to predict the future is to invent it.",
-                "Success is not final, failure is not fatal: It is the courage to continue that counts.",
-                "Act as if what you do makes a difference. It does."
-            };
+            "The best way to predict the future is to invent it.",
+            "Success is not final, failure is not fatal: It is the courage to continue that counts.",
+            "Act as if what you do makes a difference. It does."
+        };
 
             var random = new Random();
             var quote = quotes[random.Next(quotes.Length)];
@@ -160,7 +160,9 @@ namespace TestLib
                 FontWeight = FontWeight.Bold,
                 Foreground = new SolidColorBrush(Colors.DarkBlue),
                 HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Center,
-                VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center
+                VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center,
+                TextWrapping = TextWrapping.Wrap,  // Ensure text wraps within the container
+                MaxWidth = 300  // Adjust to fit your desired maximum width
             };
 
             var border = new Border
@@ -169,13 +171,14 @@ namespace TestLib
                 BorderBrush = new SolidColorBrush(Colors.Black),
                 BorderThickness = new Thickness(1),
                 Padding = new Thickness(10),
-                Child = _quoteTextBlock
+                Child = _quoteTextBlock,
+                HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Center,  // Center the border horizontally
+                VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center  // Center the border vertically
             };
 
             Content = border;
         }
     }
-
     public class TodoListPlugin : IPlugin
     {
         public void Load()

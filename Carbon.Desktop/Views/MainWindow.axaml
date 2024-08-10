@@ -9,18 +9,18 @@
         Icon="/Assets/avalonia-logo.ico"
         Title="Carbon Dashboard">
 
-    <Design.DataContext>
-        <!-- This only sets the DataContext for the previewer in an IDE,
-             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-        <vm:MainWindowViewModel/>
-    </Design.DataContext>
+	<Design.DataContext>
+		<vm:MainWindowViewModel/>
+	</Design.DataContext>
 
 	<StackPanel>
-        <TextBlock Text="Carbon Dashboard" FontSize="24" FontWeight="Bold" Margin="10"/>
+		<TextBlock Text="Carbon Dashboard" FontSize="24" FontWeight="Bold" Margin="10"/>
 		<ScrollViewer>
-			<UniformGrid x:Name="PluginGrid"
-                         Columns="3"/>
+			<WrapPanel x:Name="PluginPanel"
+                       HorizontalAlignment="Stretch"
+                       VerticalAlignment="Stretch"
+			ItemHeight="300"/> 
 		</ScrollViewer>
 	</StackPanel>
-	
+
 </Window>

@@ -11,12 +11,14 @@ namespace Carbon.Desktop.Views
     public partial class MainWindow : Window
     {
         private List<IPlugin> plugins = new List<IPlugin>();
+
         public MainWindow()
         {
             InitializeComponent();
             LoadPlugins();
             DisplayPlugins();
         }
+
         private void LoadPlugins()
         {
             string pluginPath = "Plugins"; // Directory where plugins are stored
@@ -40,11 +42,7 @@ namespace Carbon.Desktop.Views
 
         private void DisplayPlugins()
         {
-            PluginGrid.Children.Clear(); // Clear existing controls
-            PluginGrid.Rows = (int)Math.Ceiling((double)plugins.Count / 3); // Adjust the number of rows
-            PluginGrid.Columns = Math.Min(5, plugins.Count); // Adjust the number of columns
-            PluginGrid.HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Stretch;
-            PluginGrid.VerticalAlignment = Avalonia.Layout.VerticalAlignment.Stretch;
+            PluginPanel.Children.Clear(); // Clear existing controls
 
             foreach (IPlugin plugin in plugins)
             {
@@ -52,7 +50,9 @@ namespace Carbon.Desktop.Views
 
                 UserControl control = plugin.GetControl();
                 control.MaxHeight = 300;
-                PluginGrid.Children.Add(control);
+                control.MaxWidth = 300; // Set MaxWidth if needed
+
+                PluginPanel.Children.Add(control);
             }
         }
     }
