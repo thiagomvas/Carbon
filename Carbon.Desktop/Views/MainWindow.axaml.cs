@@ -51,6 +51,7 @@ namespace Carbon.Desktop.Views
                 plugin.Load();
 
                 UserControl control = plugin.GetControl();
+                control.MaxHeight = 300;
                 PluginGrid.Children.Add(control);
             }
         }

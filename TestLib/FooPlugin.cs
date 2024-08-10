@@ -60,6 +60,70 @@ namespace TestLib
         }
     }
 
+    public class AsyncPlugin : IPlugin
+    {
+        private AsyncPluginControl _control;
+        private readonly HttpClient _httpClient = new HttpClient();
+        private Task _loadingTask;
+
+        public void Load()
+        {
+            Console.WriteLine("Async plugin loading...");
+
+            // Start the data loading asynchronously
+            _loadingTask = LoadDataAsync();
+
+            Console.WriteLine("Async plugin loading initiated.");
+        }
+
+        private async Task LoadDataAsync()
+        {
+            try
+            {
+                // Simulate async data loading
+                var data = await _httpClient.GetStringAsync("https://example.com/");
+
+                // Update the control once data is loaded
+                if (_control != null)
+                {
+                    _control.UpdateContent(data);
+                }
+            }
+            catch (Exception ex)
+            {
+                if (_control != null)
+                {
+                    _control.UpdateContent($"Error: {ex.Message}");
+                }
+            }
+        }
+
+        public UserControl GetControl()
+        {
+            _control = new AsyncPluginControl();
+            return _control;
+        }
+    }
+
+    public class AsyncPluginControl : UserControl
+    {
+        private TextBlock _textBlock;
+
+        public AsyncPluginControl()
+        {
+            _textBlock = new TextBlock
+            {
+                Text = "Loading..."
+            };
+
+            Content = _textBlock;
+        }
+
+        public void UpdateContent(string data)
+        {
+            _textBlock.Text = data;
+        }
+    }
     public class RandomQuotePlugin : IPlugin
     {
         public void Load()
