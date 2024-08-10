@@ -42,7 +42,9 @@ namespace Carbon.Desktop.Views
         {
             PluginGrid.Children.Clear(); // Clear existing controls
             PluginGrid.Rows = (int)Math.Ceiling((double)plugins.Count / 3); // Adjust the number of rows
-            PluginGrid.Columns = 3; // Adjust the number of columns
+            PluginGrid.Columns = Math.Min(5, plugins.Count); // Adjust the number of columns
+            PluginGrid.HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Stretch;
+            PluginGrid.VerticalAlignment = Avalonia.Layout.VerticalAlignment.Stretch;
 
             foreach (IPlugin plugin in plugins)
             {

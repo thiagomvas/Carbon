@@ -51,7 +51,8 @@ namespace TestLib
                 FontWeight = FontWeight.Bold,
                 HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Center,
                 VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center,
-                Margin = new Thickness(10)
+                Margin = new Thickness(10),
+                
             };
 
             var border = new Border

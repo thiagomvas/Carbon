@@ -18,7 +18,8 @@
 	<StackPanel>
         <TextBlock Text="Carbon Dashboard" FontSize="24" FontWeight="Bold" Margin="10"/>
 		<ScrollViewer>
-			<UniformGrid x:Name="PluginGrid" />
+			<UniformGrid x:Name="PluginGrid"
+                         Columns="3"/>
 		</ScrollViewer>
 	</StackPanel>
 	
