@@ -20,15 +20,21 @@
 		<StackPanel Grid.Column="0" Margin="5" Spacing="10">
 			<TextBlock Text="Available Plugins" FontWeight="Bold" Margin="0,0,0,5"/>
 			<ScrollViewer VerticalScrollBarVisibility="Auto">
-				<ListBox ItemsSource="{Binding AvailablePlugins}" SelectionMode="Multiple" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+				<ListBox Background="Transparent"  ItemsSource="{Binding AvailablePlugins}" SelectionMode="Multiple" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
 					<ListBox.ItemTemplate>
 						<DataTemplate>
-							<StackPanel Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
-								<Button Command="{Binding $parent[ListBox].((local:SettingsViewModel)DataContext).AddPlugin}" CommandParameter="{Binding}" Margin="5">
-									<Svg Width="10" Path="/Assets/add.svg"/>
-								</Button>
-								<TextBlock Text="{Binding Name}" VerticalAlignment="Center"/>
-							</StackPanel>
+							<Grid>
+								<Grid.ColumnDefinitions>
+									<ColumnDefinition Width="*"/>
+									<ColumnDefinition Width="Auto"/>
+								</Grid.ColumnDefinitions>
+								<TextBlock Grid.Column="0" Text="{Binding Name}" VerticalAlignment="Center"/>
+								<StackPanel Grid.Column="1" Orientation="Horizontal">
+									<Button Background="Transparent" Command="{Binding $parent[ListBox].((local:SettingsViewModel)DataContext).AddPlugin}" CommandParameter="{Binding}">
+										<Svg Width="10" Path="/Assets/add.svg"/>
+									</Button>
+								</StackPanel>
+							</Grid>
 						</DataTemplate>
 					</ListBox.ItemTemplate>
 				</ListBox>
@@ -39,7 +45,7 @@
 		<StackPanel Grid.Column="1" Margin="5" Spacing="10">
 			<TextBlock Text="Selected Plugins" FontWeight="Bold" Margin="0,0,0,5"/>
 			<ScrollViewer VerticalScrollBarVisibility="Auto">
-				<ListBox ItemsSource="{Binding SelectedPlugins}" SelectionMode="Multiple" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+				<ListBox Background="Transparent" ItemsSource="{Binding SelectedPlugins}" SelectionMode="Multiple" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
 					<ListBox.ItemTemplate>
 						<DataTemplate>
 							<Grid>
@@ -49,13 +55,13 @@
 									</Grid.ColumnDefinitions>
 								<TextBlock Grid.Column="0" Text="{Binding Name}" VerticalAlignment="Center"/>
 								<StackPanel Grid.Column="1" Orientation="Horizontal">
-									<Button Command="{Binding $parent[ListBox].((local:SettingsViewModel)DataContext).MoveUpPlugin}" CommandParameter="{Binding}">
+									<Button Background="Transparent" Command="{Binding $parent[ListBox].((local:SettingsViewModel)DataContext).MoveUpPlugin}" CommandParameter="{Binding}">
 										<Svg Width="10" Path="/Assets/up.svg"/>
 									</Button>
-									<Button Command="{Binding $parent[ListBox].((local:SettingsViewModel)DataContext).MoveDownPlugin}" CommandParameter="{Binding}">
+									<Button Background="Transparent" Command="{Binding $parent[ListBox].((local:SettingsViewModel)DataContext).MoveDownPlugin}" CommandParameter="{Binding}">
 										<Svg Width="10" Path="/Assets/down.svg"/>
 									</Button>
-									<Button Command="{Binding $parent[ListBox].((local:SettingsViewModel)DataContext).RemovePlugin}" CommandParameter="{Binding}">
+									<Button Background="Transparent"  Command="{Binding $parent[ListBox].((local:SettingsViewModel)DataContext).RemovePlugin}" CommandParameter="{Binding}">
 										<Svg Width="10" Path="/Assets/remove.svg"/>
 									</Button>
 								</StackPanel>
