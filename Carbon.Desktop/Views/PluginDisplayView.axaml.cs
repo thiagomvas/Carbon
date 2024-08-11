@@ -13,7 +13,8 @@ namespace Carbon.Desktop.Views;
 
 public partial class PluginDisplayView : UserControl
 {
-    private List<IPlugin> plugins = new List<IPlugin>();
+    private readonly PluginManager pluginManager = new();
+    private readonly List<IPlugin> plugins = new();
     public PluginDisplayView()
     {
         InitializeComponent();
@@ -44,24 +45,16 @@ public partial class PluginDisplayView : UserControl
         if (!Directory.Exists(pluginPath))
             return;
 
-        foreach (string file in Directory.GetFiles(pluginPath, "*.dll"))
+        pluginManager.LoadPlugins(pluginPath);
+        var plugs = pluginManager.Plugins;
+
+        foreach (var selected in svm.SelectedPlugins)
         {
-            Assembly assembly = Assembly.LoadFrom(file);
-            foreach (Type type in assembly.GetTypes())
+            var plugin = plugs.FirstOrDefault(p => p.GetType() == selected.PluginType);
+            if (plugin != null)
             {
-                // Check if type is selected in the vm
-                if (!svm.SelectedPlugins.Any(p => p.Name == type.Name))
-                    continue;
-
-                if (typeof(IPlugin).IsAssignableFrom(type) && !type.IsInterface && !type.IsAbstract)
-                {
-                    IPlugin plugin = (IPlugin)Activator.CreateInstance(type);
-                    plugins.Add(plugin);
-                }
+                plugins.Add(plugin);
             }
-
-            // Order plugins to meet the same order as in the vm
-            plugins = plugins.OrderBy(p => svm.SelectedPlugins.IndexOf(svm.SelectedPlugins.FirstOrDefault(sp => sp.Name == p.GetType().Name))).ToList();
         }
     }
 }

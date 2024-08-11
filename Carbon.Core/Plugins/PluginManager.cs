@@ -4,7 +4,7 @@ namespace Carbon.Core.Plugins
 {
     public class PluginManager
     {
-        private List<IPlugin> plugins = new();
+        public List<IPlugin> Plugins = new();
         public void LoadPlugins(string path)
         {
             if(!Directory.Exists(path))
@@ -20,7 +20,7 @@ namespace Carbon.Core.Plugins
                     if (typeof(IPlugin).IsAssignableFrom(type) && !type.IsInterface && !type.IsAbstract)
                     {
                         IPlugin plugin = (IPlugin)Activator.CreateInstance(type);
-                        plugins.Add(plugin);
+                        Plugins.Add(plugin);
                     }
                 }
             }
@@ -28,7 +28,7 @@ namespace Carbon.Core.Plugins
 
         public void InitializePlugins()
         {
-            foreach (IPlugin plugin in plugins)
+            foreach (IPlugin plugin in Plugins)
             {
                 plugin.Load();
             }

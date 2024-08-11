@@ -28,7 +28,7 @@
 									<ColumnDefinition Width="*"/>
 									<ColumnDefinition Width="Auto"/>
 								</Grid.ColumnDefinitions>
-								<TextBlock Grid.Column="0" Text="{Binding Name}" VerticalAlignment="Center"/>
+								<TextBlock Grid.Column="0" Text="{Binding PluginType.Name}" VerticalAlignment="Center"/>
 								<StackPanel Grid.Column="1" Orientation="Horizontal">
 									<Button Background="Transparent" Command="{Binding $parent[ListBox].((local:SettingsViewModel)DataContext).AddPlugin}" CommandParameter="{Binding}">
 										<Svg Width="10" Path="/Assets/add.svg"/>
@@ -53,7 +53,7 @@
 									<ColumnDefinition Width="*"/>
 									<ColumnDefinition Width="Auto"/>
 									</Grid.ColumnDefinitions>
-								<TextBlock Grid.Column="0" Text="{Binding Name}" VerticalAlignment="Center"/>
+								<TextBlock Grid.Column="0" Text="{Binding PluginType.Name}" VerticalAlignment="Center"/>
 								<StackPanel Grid.Column="1" Orientation="Horizontal">
 									<Button Background="Transparent" Command="{Binding $parent[ListBox].((local:SettingsViewModel)DataContext).MoveUpPlugin}" CommandParameter="{Binding}">
 										<Svg Width="10" Path="/Assets/up.svg"/>

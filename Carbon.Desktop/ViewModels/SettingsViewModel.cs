@@ -37,7 +37,7 @@ namespace Carbon.Desktop.ViewModels
                     if (typeof(IPlugin).IsAssignableFrom(type) && !type.IsInterface && !type.IsAbstract)
                     {
                         IPlugin plugin = (IPlugin)Activator.CreateInstance(type);
-                        AvailablePlugins.Add(new PluginItem { Name = plugin.GetType().Name, Plugin = plugin });
+                        AvailablePlugins.Add(new PluginItem { PluginType = type, Plugin = plugin });
                     }
                 }
             }
@@ -49,12 +49,16 @@ namespace Carbon.Desktop.ViewModels
             {
                 string json = File.ReadAllText(SettingsFilePath);
                 var settings = JsonConvert.DeserializeObject<PluginSettings>(json);
-                foreach (var name in settings.PluginNames)
+                foreach (var typeName in settings.PluginTypeNames)
                 {
-                    var pluginItem = AvailablePlugins.FirstOrDefault(p => p.Name == name);
-                    if (pluginItem != null)
+                    Type pluginType = Type.GetType(typeName);
+                    if (pluginType != null)
                     {
-                        SelectedPlugins.Add(pluginItem);
+                        var pluginItem = AvailablePlugins.FirstOrDefault(p => p.PluginType == pluginType);
+                        if (pluginItem != null)
+                        {
+                            SelectedPlugins.Add(pluginItem);
+                        }
                     }
                 }
             }
@@ -64,7 +68,7 @@ namespace Carbon.Desktop.ViewModels
         {
             var settings = new PluginSettings
             {
-                PluginNames = SelectedPlugins.Select(p => p.Name).ToList()
+                PluginTypeNames = SelectedPlugins.Select(p => p.PluginType.AssemblyQualifiedName).ToList()
             };
 
             string json = JsonConvert.SerializeObject(settings, Formatting.Indented);
@@ -76,25 +80,35 @@ namespace Carbon.Desktop.ViewModels
         {
             SavePluginSettings();
         }
+
         [RelayCommand]
         public void Reset()
         {
             SelectedPlugins.Clear();
             LoadPluginSettings();
         }
+
         [RelayCommand]
         public void AddPlugin(PluginItem plugin)
         {
-            if (!SelectedPlugins.Contains(plugin))
+            if (SelectedPlugins.Contains(plugin))
+            {
+                // Add new instance
+                var newPlugin = new PluginItem { PluginType = plugin.PluginType, Plugin = (IPlugin)Activator.CreateInstance(plugin.PluginType) };
+                SelectedPlugins.Add(newPlugin);
+            }
+            else
             {
                 SelectedPlugins.Add(plugin);
             }
         }
+
         [RelayCommand]
         public void RemovePlugin(PluginItem plugin)
         {
             SelectedPlugins.Remove(plugin);
         }
+
         [RelayCommand]
         public void MoveUpPlugin(PluginItem plugin)
         {
@@ -104,6 +118,7 @@ namespace Carbon.Desktop.ViewModels
                 SelectedPlugins.Move(index, index - 1);
             }
         }
+
         [RelayCommand]
         public void MoveDownPlugin(PluginItem plugin)
         {
@@ -117,12 +132,12 @@ namespace Carbon.Desktop.ViewModels
 
     public class PluginItem
     {
-        public string Name { get; set; }
+        public Type PluginType { get; set; }
         public IPlugin Plugin { get; set; }
     }
 
     public class PluginSettings
     {
-        public List<string> PluginNames { get; set; } = new List<string>();
+        public List<string> PluginTypeNames { get; set; } = new List<string>();
     }
 }
