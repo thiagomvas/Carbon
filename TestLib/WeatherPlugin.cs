@@ -2,9 +2,6 @@
 using Avalonia.Controls;
 using Avalonia.Media;
 using Carbon.Core.Plugins;
-using System;
-using System.Reactive.Linq;
-using System.Reactive.Subjects;
 
 namespace TestLib
 {
@@ -52,7 +49,7 @@ namespace TestLib
                 HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Center,
                 VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center,
                 Margin = new Thickness(10),
-                
+
             };
 
             var border = new Border

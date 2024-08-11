@@ -1,5 +1,4 @@
-﻿using Avalonia.Collections;
-using Carbon.Core.Plugins;
+﻿using Carbon.Core.Plugins;
 using CommunityToolkit.Mvvm.Input;
 using Newtonsoft.Json;
 using System;

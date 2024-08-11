@@ -1,13 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
-using Carbon.Core.Plugins;
-using Carbon.Desktop.ViewModels;
-using CommunityToolkit.Mvvm.ComponentModel;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Reflection;
 
 namespace Carbon.Desktop.Views
 {

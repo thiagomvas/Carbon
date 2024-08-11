@@ -7,7 +7,7 @@ namespace Carbon.Core.Plugins
         public List<IPlugin> Plugins = new();
         public void LoadPlugins(string path)
         {
-            if(!Directory.Exists(path))
+            if (!Directory.Exists(path))
             {
                 throw new DirectoryNotFoundException($"The path {path} does not exist.");
             }
