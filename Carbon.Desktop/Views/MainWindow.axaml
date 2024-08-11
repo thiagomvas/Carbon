@@ -7,20 +7,56 @@
         x:Class="Carbon.Desktop.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
-        Title="Carbon Dashboard">
+        Title="Carbon Dashboard"
+	    Background="#0d0a10">
 
 	<Design.DataContext>
 		<vm:MainWindowViewModel/>
 	</Design.DataContext>
 
-	<StackPanel>
-		<TextBlock Text="Carbon Dashboard" FontSize="24" FontWeight="Bold" Margin="10"/>
-		<ScrollViewer>
-			<WrapPanel x:Name="PluginPanel"
-                       HorizontalAlignment="Stretch"
-                       VerticalAlignment="Stretch"
-			ItemHeight="300"/> 
-		</ScrollViewer>
-	</StackPanel>
+	<DockPanel>
+		<!-- Sidebar -->
+		<Grid DockPanel.Dock="Left" Width="60" Background="#0d0a10" VerticalAlignment="Stretch">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto"></RowDefinition>
+				<RowDefinition Height="*"></RowDefinition>
+				<RowDefinition Height="Auto"></RowDefinition>
+			</Grid.RowDefinitions>
+			<!-- Logo at the top -->
+			<Image Grid.Row="0" Source="/Assets/avalonia-logo.ico" Height="25" HorizontalAlignment="Center" Margin="5 10 5 0"/>
+			<!-- Centered buttons -->
+			<StackPanel Grid.Row="1"  VerticalAlignment="Center" HorizontalAlignment="Center">
+				<Button Command="{Binding SelectPluginsViewCommand}" Content="Button1" Width="40" Height="40" Margin="5" Background="Transparent" BorderThickness="0"/>
+				<Button Command="{Binding SelectSettingsViewCommand}" Content="Button2" Width="40" Height="40" Margin="5" Background="Transparent" BorderThickness="0"/>
+			</StackPanel>
+			<!-- Button at the bottom -->
+			<Button Grid.Row="2"  Content="Bottom Button" Width="60" Height="40" VerticalAlignment="Bottom" Background="Transparent" BorderThickness="0"/>
+		</Grid>
 
+		<DockPanel>
+			<Menu DockPanel.Dock="Top">
+				<MenuItem Header="_File">
+					<MenuItem Header="_Open..."/>
+					<Separator/>
+					<MenuItem Header="_Exit"/>
+				</MenuItem>
+				<MenuItem Header="_Edit">
+					<MenuItem Header="Copy"/>
+					<MenuItem Header="Paste"/>
+				</MenuItem>
+			</Menu>
+
+			<!-- Main content area -->
+			<Border BorderBrush="#1e1f25"
+					BorderThickness="2"
+					CornerRadius="25"
+					Background="#1e1f25"
+				Margin="0 10 10 10"
+				Padding="10">
+				<ScrollViewer>
+					<TransitioningContentControl Content="{Binding SelectedViewModel}"/>
+				</ScrollViewer>
+			</Border>
+		</DockPanel>
+	</DockPanel>
 </Window>
