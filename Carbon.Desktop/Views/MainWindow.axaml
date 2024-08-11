@@ -8,7 +8,8 @@
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
         Title="Carbon Dashboard"
-	    Background="#0d0a10">
+	    Background="#0d0a10"
+        ExtendClientAreaToDecorationsHint="True">
 
 	<Design.DataContext>
 		<vm:MainWindowViewModel/>
@@ -23,28 +24,39 @@
 				<RowDefinition Height="Auto"></RowDefinition>
 			</Grid.RowDefinitions>
 			<!-- Logo at the top -->
-			<Image Grid.Row="0" Source="/Assets/avalonia-logo.ico" Height="25" HorizontalAlignment="Center" Margin="5 10 5 0"/>
+			<Svg Grid.Row="0" Path="/Assets/logo.svg" Height="35" HorizontalAlignment="Center" Margin="5 10 5 0"/>
 			<!-- Centered buttons -->
 			<StackPanel Grid.Row="1"  VerticalAlignment="Center" HorizontalAlignment="Center">
-				<Button Command="{Binding SelectPluginsViewCommand}" Content="Button1" Width="40" Height="40" Margin="5" Background="Transparent" BorderThickness="0"/>
-				<Button Command="{Binding SelectSettingsViewCommand}" Content="Button2" Width="40" Height="40" Margin="5" Background="Transparent" BorderThickness="0"/>
+				<Button CornerRadius="20" Command="{Binding SelectPluginsViewCommand}" Width="40" Height="40" Margin="5" Background="Transparent" BorderThickness="0">
+					<Svg Width="30"
+						 Height="30"
+						 Path="/Assets/dashboard.svg"/>
+				</Button>
+				<Button Padding="10" CornerRadius="20" Command="{Binding SelectSettingsViewCommand}" Width="40" Height="40" Margin="5" Background="Transparent" BorderThickness="0">
+					<Svg Width="20"
+						 Height="20"
+						 Path="/Assets/settings.svg"/>
+				</Button>
 			</StackPanel>
 			<!-- Button at the bottom -->
 			<Button Grid.Row="2"  Content="Bottom Button" Width="60" Height="40" VerticalAlignment="Bottom" Background="Transparent" BorderThickness="0"/>
 		</Grid>
 
 		<DockPanel>
-			<Menu DockPanel.Dock="Top">
-				<MenuItem Header="_File">
-					<MenuItem Header="_Open..."/>
-					<Separator/>
-					<MenuItem Header="_Exit"/>
-				</MenuItem>
-				<MenuItem Header="_Edit">
-					<MenuItem Header="Copy"/>
-					<MenuItem Header="Paste"/>
-				</MenuItem>
-			</Menu>
+				<Menu DockPanel.Dock="Top" 
+					  PointerReleased="InputElement_OnPointerReleased" 
+					  PointerMoved="InputElement_OnPointerMoved" 
+					  PointerPressed="InputElement_OnPointerPressed" >
+					<MenuItem Header="_File">
+						<MenuItem Header="_Open..."/>
+						<Separator/>
+						<MenuItem Header="_Exit"/>
+					</MenuItem>
+					<MenuItem Header="_Edit">
+						<MenuItem Header="Copy"/>
+						<MenuItem Header="Paste"/>
+					</MenuItem>
+				</Menu>
 
 			<!-- Main content area -->
 			<Border BorderBrush="#1e1f25"
