@@ -1,16 +1,15 @@
 using Carbon.Core;
 using Cocona;
+using Microsoft.Extensions.Logging;
 
 namespace Carbon.Cli;
 
 public class ConvertCommands
 {
-    private readonly ICliWriter _cliWriter;
     private readonly IEnumerable<IFileConverter> _converters;
     
-    public ConvertCommands(ICliWriter writer, IEnumerable<IFileConverter> converters)
+    public ConvertCommands(IEnumerable<IFileConverter> converters)
     {
-        _cliWriter = writer;
         _converters = converters;
     }
     
@@ -22,22 +21,30 @@ public class ConvertCommands
         
         if (!File.Exists(inputFile))
         {
-            _cliWriter.WriteError("Input file does not exist");
+            CliWriter.WriteError("Input file does not exist");
             return;
         }
         
         if(File.Exists(outputFile))
         {
-            _cliWriter.WriteError("Output file already exists");
+            CliWriter.WriteError("Output file already exists");
             return;
         }
+
+        // check if output file is just the result extension, if it is, save to current executing directory
+        if (Path.GetExtension(outputFile) == "" || outputFile.TrimStart('.') == Path.GetExtension(outputFile))
+        {
+            outputFile = Path.Combine(Directory.GetCurrentDirectory(), Path.GetFileNameWithoutExtension(inputFile) + "." + outputFile.TrimStart('.'));
+        }
+        
+        
         
         var from = Path.GetExtension(inputFile).TrimStart('.');
         var to = Path.GetExtension(outputFile).TrimStart('.');
         var converter = _converters.FirstOrDefault(x => x.CanConvert(to, from));
         if (converter == null)
         {
-            _cliWriter.WriteError("No converter found for {0} to {1}", from, to);
+            CliWriter.WriteError($"Conversion from {from} to {to} is not supported");
             return;
         }
 
@@ -47,10 +54,10 @@ public class ConvertCommands
         }
         catch (Exception e)
         {
-            _cliWriter.WriteError("An error occurred: {0}", e.Message);
+            CliWriter.WriteError("An error occurred while converting the file");
             throw;
         }
         
-        _cliWriter.WriteSuccess("Conversion complete");
+        CliWriter.WriteSuccess($"Successfully saved converted file as {outputFile}");
     }
 }
