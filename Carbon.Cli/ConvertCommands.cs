@@ -19,6 +19,19 @@ public class ConvertCommands
         [Argument(Description = "Path to output file or target extension")] string outputFile, 
         [Option("Arguments to pass to converters (e.g. ffmpeg args)")] string args = "")
     {
+        
+        if (!File.Exists(inputFile))
+        {
+            _cliWriter.WriteError("Input file does not exist");
+            return;
+        }
+        
+        if(File.Exists(outputFile))
+        {
+            _cliWriter.WriteError("Output file already exists");
+            return;
+        }
+        
         var from = Path.GetExtension(inputFile).TrimStart('.');
         var to = Path.GetExtension(outputFile).TrimStart('.');
         var converter = _converters.FirstOrDefault(x => x.CanConvert(to, from));
