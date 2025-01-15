@@ -5,11 +5,13 @@ namespace Carbon.Cli;
 
 public class ConvertCommands
 {
-    private readonly FfmpegVideoConverter _converter;
+    private readonly ICliWriter _cliWriter;
+    private readonly IEnumerable<IFileConverter> _converters;
     
-    public ConvertCommands(FfmpegVideoConverter converter)
+    public ConvertCommands(ICliWriter writer, IEnumerable<IFileConverter> converters)
     {
-        _converter = converter;
+        _cliWriter = writer;
+        _converters = converters;
     }
     
     [Command( Description = "Convert from one file format to another")]
@@ -17,6 +19,15 @@ public class ConvertCommands
         [Argument(Description = "Path to output file or target extension")] string outputFile, 
         [Option("Arguments to pass to converters (e.g. ffmpeg args)")] string args = "")
     {
-        _converter.Convert(inputFile, outputFile, args);
+        var from = Path.GetExtension(inputFile).TrimStart('.');
+        var to = Path.GetExtension(outputFile).TrimStart('.');
+        var converter = _converters.FirstOrDefault(x => x.CanConvert(to, from));
+        if (converter == null)
+        {
+            _cliWriter.WriteError("No converter found for {0} to {1}", from, to);
+            return;
+        }
+        
+        converter.Convert(inputFile, outputFile, args);
     }
 }

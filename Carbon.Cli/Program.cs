@@ -5,7 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 var builder = CoconaApp.CreateBuilder();
-builder.Services.AddTransient<FfmpegVideoConverter>();
+builder.Services.AddTransient<ICliWriter, CliWriter>();
+builder.Services.AddTransient<IFileConverter, FfmpegVideoConverter>();
 
 #if DEBUG
 builder.Services.AddLogging(loggingBuilder =>
