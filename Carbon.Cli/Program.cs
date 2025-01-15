@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 
 var builder = CoconaApp.CreateBuilder();
 builder.Services.AddTransient<IFileConverter, FfmpegVideoConverter>();
+builder.Services.AddTransient<IFileConverter, ImageConverter>();
 
 #if DEBUG
 builder.Services.AddLogging(loggingBuilder =>
