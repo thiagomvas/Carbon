@@ -27,7 +27,17 @@ public class ConvertCommands
             _cliWriter.WriteError("No converter found for {0} to {1}", from, to);
             return;
         }
+
+        try
+        {
+            converter.Convert(inputFile, outputFile, args);
+        }
+        catch (Exception e)
+        {
+            _cliWriter.WriteError("An error occurred: {0}", e.Message);
+            throw;
+        }
         
-        converter.Convert(inputFile, outputFile, args);
+        _cliWriter.WriteSuccess("Conversion complete");
     }
 }
